@@ -1,0 +1,6 @@
+bin/
+obj/
+/packages/
+/.idea/*
+.cache
+./RafaelChicovisPortifolio/appsettings.json
