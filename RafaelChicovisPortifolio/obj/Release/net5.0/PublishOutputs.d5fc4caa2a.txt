@@ -1,0 +1,7 @@
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\RafaelChicovisPortifolio.exe
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\appsettings.Development.json
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\appsettings.json
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\RafaelChicovisPortifolio.dll
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\RafaelChicovisPortifolio.deps.json
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\RafaelChicovisPortifolio.runtimeconfig.json
+C:\Users\Dev01\Documents\Testes\RafaelChicovisPortifolio\Backend\dist\RafaelChicovisPortifolio.pdb
