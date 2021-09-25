@@ -24,7 +24,7 @@ namespace RafaelChicovisPortifolio.Authentications.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new(ClaimTypes.Name, user.UserName),
-                    new(ClaimTypes.UserData, user.Id.ToString()),
+                    new("Id", user.Id.ToString()),
                     new(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(Int32.Parse(expirationTimeInMinutes)),
@@ -36,10 +36,6 @@ namespace RafaelChicovisPortifolio.Authentications.Services
             var token = tokenHandler.CreateToken(tokenDescripotr);
             return tokenHandler.WriteToken(token);
         }
-
-        public static bool ValidateTokenAsync(string token)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 }

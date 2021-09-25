@@ -2,7 +2,7 @@
 
 namespace RafaelChicovisPortifolio.Models.Entities
 {
-    public abstract class FullAuditedEntity
+    public abstract class FullAuditedEntity : ISoftDelete
     {
         public virtual bool IsDeleted { get; set; }
         public virtual Guid? DeleterId { get; set; }

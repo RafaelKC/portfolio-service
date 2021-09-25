@@ -2,7 +2,7 @@
 {
     public enum AuthenticationType
     {
-        Password,
-        RefreshToken
+        Password = 1,
+        RefreshToken = 2
     }
 }

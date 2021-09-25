@@ -53,7 +53,8 @@ namespace RafaelChicovisPortifolio
                         ValidateIssuer = true,
                         ValidIssuer = "RafaelChicovisPortifolioService",
                         ValidateAudience = true,
-                        ValidAudience = frontendUrl
+                        ValidAudience = frontendUrl,
+                        ValidateLifetime = true
                     };
                 });
         }

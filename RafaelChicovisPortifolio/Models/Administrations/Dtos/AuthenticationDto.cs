@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using RafaelChicovisPortifolio.Models.Administrations.Enums;
 
 namespace RafaelChicovisPortifolio.Models.Administrations.Dtos
