@@ -39,7 +39,6 @@ namespace RafaelChicovisPortifolio
             });
             services.AddCors();
             services.AddControllers();
-            services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRefreshTokenService, RefreshTokenService>();
             services.AddTransient<IDeactiveTokenService, DeactiveTokenService>();
@@ -65,6 +64,7 @@ namespace RafaelChicovisPortifolio
                         ValidateLifetime = true
                     };
                 });
+            services.AddTransient<TokenManagerMiddleware>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -83,7 +83,7 @@ namespace RafaelChicovisPortifolio
 
             app.UseAuthentication();
             app.UseAuthorization();
-            // app.UseMiddleware<TokenManagerMiddleware>();
+            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
