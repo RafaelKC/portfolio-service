@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "X1adNuCg03oNswGD+G7ItAea7nNjzeenUJ91EeDgyrK9Wsrc/bSRWPeFGJn2i7qGnVc0XVGRB0hGy18/XiGOYw==",
+  "dgSpecHash": "S9rU7Kuwfb+l2Vuw9Po2F5wxLDB+5lWhXIPClX8iLiZoRWZ9YHx4oucnF8MTklygrzNmKI1V/LFzrs2choPZMg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Dev01\\Documents\\Testes\\RafaelChicovisPortifolio\\Backend\\RafaelChicovisPortifolio\\RafaelChicovisPortifolio.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Dev01\\.nuget\\packages\\entityframework\\5.0.0\\entityframework.5.0.0.nupkg.sha512",
     "C:\\Users\\Dev01\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Dev01\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\Dev01\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
@@ -71,5 +72,16 @@
     "C:\\Users\\Dev01\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512",
     "C:\\Users\\Dev01\\.nuget\\packages\\system.threading.channels\\4.5.0\\system.threading.channels.4.5.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'EntityFramework 5.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "EntityFramework",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }

@@ -8,6 +8,7 @@ namespace RafaelChicovisPortifolio.Contexts
         public DbSet<User> Users { get; set; }
         public PortifolioContext(DbContextOptions<PortifolioContext> options) : base(options)
         {
+            Database.Migrate();
         }
     }
 }
