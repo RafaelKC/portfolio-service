@@ -8,5 +8,7 @@ namespace RafaelChicovisPortifolio.Authentications.Services
     {
         public Task<string> AuthByRefreshToken(string refreshToken, string token);
         public Task<string> GenerateRefreshToken(Guid userId, string token);
+        public Task DeactiveAsync(string token);
+        
     }
 }

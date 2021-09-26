@@ -9,7 +9,6 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RafaelChicovisPortifolio.Contexts;
-using RafaelChicovisPortifolio.Models.Administrations.Entities;
 
 namespace RafaelChicovisPortifolio.Authentications.Services
 {
@@ -18,15 +17,20 @@ namespace RafaelChicovisPortifolio.Authentications.Services
         private readonly IConfiguration _configuration;
         private readonly IDistributedCache _distributedCache;
         private readonly PortifolioContext _context;
+        private readonly IDeactiveTokenService _deactiveTokenService;
+        private readonly IAuthenticationTokenService _authenticationService;
         
         public RefreshTokenService(
             IConfiguration configuration,
             IDistributedCache distributedCache,
-            PortifolioContext context)
+            PortifolioContext context,
+            IDeactiveTokenService deactiveTokenService, IAuthenticationTokenService authenticationService)
         {
             _configuration = configuration;
             _distributedCache = distributedCache;
             _context = context;
+            _deactiveTokenService = deactiveTokenService;
+            _authenticationService = authenticationService;
         }
 
         public async Task<string> AuthByRefreshToken(string refreshToken, string token)
@@ -45,16 +49,33 @@ namespace RafaelChicovisPortifolio.Authentications.Services
                 return null;
             }
 
+            var tokenActivated = await _deactiveTokenService.IsActiveAsync(token);
+            if (!tokenActivated)
+            {
+                return null;
+            }
+
+            Guid userId;
+            try
+            {
+                userId = Guid.Parse(validatedToken.Claims.Single(x => x.Type == "Id").Value);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            
             var user = await _context.Users.FirstOrDefaultAsync(e =>
-                e.Id.ToString() == validatedToken.Claims.Single(x => x.Type == "Id").Value &&
-                e.IsDeleted == false);
+                e.Id == userId && e.IsDeleted == false);
 
             if (user == null)
             {
                 return null;
             }
             
-            var newToken = AuthenticationTokenService.GenerateTokenAsync(user);
+            var newToken = _authenticationService.GenerateTokenAsync(user);
+            await DeactiveAsync(refreshToken);
             return newToken;
         }
 
@@ -70,6 +91,11 @@ namespace RafaelChicovisPortifolio.Authentications.Services
             });
 
             return refreshToken;
+        }
+
+        public async Task DeactiveAsync(string refreshToken)
+        {
+            await _distributedCache.RemoveAsync(GetKey(refreshToken));
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
@@ -90,15 +116,11 @@ namespace RafaelChicovisPortifolio.Authentications.Services
             try
             {
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-                if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
-                {
-                    return null;
-                }
-
                 return principal;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 return null;
             }
         }

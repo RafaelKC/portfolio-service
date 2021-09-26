@@ -1,13 +1,16 @@
+using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using RafaelChicovisPortifolio.Authentications.Middlewares;
+using RafaelChicovisPortifolio.Authentications.Services;
 using RafaelChicovisPortifolio.Contexts;
 
 namespace RafaelChicovisPortifolio
@@ -30,13 +33,18 @@ namespace RafaelChicovisPortifolio
                 options.Configuration =
                     Configuration.GetSection("PotifolioSettings").GetSection("redisConnection").Value;
             });
-            services.AddEntityFrameworkNpgsql().AddDbContext<PortifolioContext>(options =>
+            services.AddDbContext<PortifolioContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection"));
             });
             services.AddCors();
             services.AddControllers();
             services.AddTransient<TokenManagerMiddleware>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
+            services.AddTransient<IDeactiveTokenService, DeactiveTokenService>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IAuthenticationTokenService, AuthenticationTokenService>();
             services.AddAuthentication(e =>
                 {
                     e.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,8 +82,8 @@ namespace RafaelChicovisPortifolio
                 .AllowAnyHeader());
 
             app.UseAuthentication();
-            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseAuthorization();
+            // app.UseMiddleware<TokenManagerMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

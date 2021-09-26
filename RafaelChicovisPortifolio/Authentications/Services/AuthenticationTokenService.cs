@@ -8,13 +8,24 @@ using RafaelChicovisPortifolio.Models.Administrations.Entities;
 
 namespace RafaelChicovisPortifolio.Authentications.Services
 {
-    public static class AuthenticationTokenService
+    public interface IAuthenticationTokenService
     {
-        private static readonly IConfiguration _configuration;
-        
-        public static string GenerateTokenAsync(User user)
+        public string GenerateTokenAsync(User user);
+    }
+    
+    public class AuthenticationTokenService : IAuthenticationTokenService
+    {
+        private readonly IConfiguration _configuration;
+
+        public AuthenticationTokenService(IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("PotifolioSettings").GetSection("Token_key").Value);
+            _configuration = configuration;
+        }
+
+        public string GenerateTokenAsync(User user)
+        {
+            var key = _configuration.GetSection("PotifolioSettings").GetSection("Token_key").Value;
+            var keyByte = Encoding.ASCII.GetBytes(_configuration.GetSection("PotifolioSettings").GetSection("Token_key").Value);
             var expirationTimeInMinutes = _configuration.GetSection("PotifolioSettings").GetSection("authenticationTimeoutInMinutes").Value;
             var frontendUrl = _configuration.GetSection("PotifolioSettings").GetSection("FrontendUrl").Value;
             
@@ -28,7 +39,7 @@ namespace RafaelChicovisPortifolio.Authentications.Services
                     new(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(Int32.Parse(expirationTimeInMinutes)),
-                SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(keyByte), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = "RafaelChicovisPortifolioService",
                 Audience = frontendUrl
             };
